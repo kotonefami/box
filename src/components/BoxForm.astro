@@ -1,0 +1,90 @@
+---
+interface Props {
+    boxId: string;
+}
+
+const { boxId } = Astro.props;
+---
+
+<form id="odaiForm" data-box-id={boxId}>
+    <textarea
+        name="odai"
+        rows="10"
+        placeholder="ふぁみちゃんふぁみちゃんふぁみちゃんふぁみちゃんふぁみちゃんふぁみちゃんふぁみちゃんふぁみちゃんふぁみちゃんふぁみちゃんふぁみちゃんふぁみちゃんふぁみちゃんふぁみちゃんふぁみちゃん"
+    ></textarea>
+    <button type="submit">送信</button>
+</form>
+
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        margin: 1em 0px;
+    }
+    textarea {
+        padding: 0.5em;
+        font-size: 1.2em;
+        margin: 1em 0px;
+    }
+    button {
+        padding: 0.5em;
+        font-size: 1.2em;
+        cursor: pointer;
+    }
+</style>
+
+<script is:inline>
+    let timeout = null;
+    const form = document.querySelector("#odaiForm");
+
+    if (form) {
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const textarea = form.querySelector("textarea");
+            const button = form.querySelector("button");
+
+            if (textarea.value !== "") {
+                textarea.disabled = true;
+                button.disabled = true;
+
+                var formData = new FormData();
+                formData.append("content", textarea.value);
+
+                const boxId = form.getAttribute("data-box-id");
+
+                try {
+                    const response = await fetch(`/api/boxes/${boxId}/messages`, { method: "POST", body: formData });
+
+                    if (timeout) clearTimeout(timeout);
+                    const bannerSuccess = document.querySelector("#bannerSuccess");
+                    const bannerError = document.querySelector("#bannerError");
+
+                    bannerSuccess.style.display = "none";
+                    bannerError.style.display = "none";
+
+                    if (response.ok) {
+                        textarea.value = "";
+                        bannerSuccess.style.display = "block";
+                    } else {
+                        bannerError.style.display = "block";
+                    }
+                    timeout = window.setTimeout(() => {
+                        bannerSuccess.style.display = "none";
+                        bannerError.style.display = "none";
+                        timeout = null;
+                    }, 3000);
+                } catch (e) {
+                    const bannerError = document.querySelector("#bannerError");
+                    bannerError.style.display = "block";
+                    timeout = window.setTimeout(() => {
+                        bannerError.style.display = "none";
+                        timeout = null;
+                    }, 3000);
+                }
+
+                textarea.disabled = false;
+                button.disabled = false;
+            }
+        });
+    }
+</script>

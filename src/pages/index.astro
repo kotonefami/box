@@ -1,0 +1,21 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Banner from "../components/Banner.astro";
+import BoxView from "../components/BoxView.astro";
+import Information from "../components/Information.astro";
+import Description from "../components/Description.astro";
+import { getBoxDisplayName } from "../utils/box";
+
+export const prerender = false;
+
+const boxName = getBoxDisplayName("default");
+---
+
+<Layout title={boxName}>
+    <!-- メンテナンス中なら表示する: <Information /> -->
+    <Banner />
+
+    <BoxView boxId="default" boxName={boxName}>
+        <Description />
+    </BoxView>
+</Layout>

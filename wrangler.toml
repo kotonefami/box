@@ -1,0 +1,25 @@
+name = "box"
+compatibility_date = "2026-05-24"
+
+[assets]
+directory = "./dist/client"
+
+# 箱と KV の対応
+[[kv_namespaces]]
+binding = "KV_DEFAULT"
+id = "b35154cee5b14af4a19be190d812d9b1"
+# [[kv_namespaces]]
+# binding = "KV_SECOND"
+# id = "YOUR_KV_SECOND_ID"
+
+[vars]
+MISSKEY_SERVER = "https://ktnfm.com"
+BOXES = "default"
+BOX_NAMES = '{"default":"第三世代琴音ふぁみのお題箱"}'
+
+# MISSKEY_SERVER = "https://misskey.example.com"
+# MISSKEY_TOKEN = "YOUR_TOKEN"
+# CONSOLE_USER = "admin"
+# CONSOLE_PASS = "admin"
+# BOXES = "default,second,third"
+# BOX_NAMES = '{"default":"default box name","second":"second box name"}'

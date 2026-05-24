@@ -1,0 +1,66 @@
+---
+import { getBoxKv } from "../utils/box";
+
+interface Props {
+    boxId: string;
+}
+
+const { boxId } = Astro.props;
+
+const kv = getBoxKv(boxId);
+
+let messages: { id: string; content: string | null }[] = [];
+
+if (kv) {
+    const { keys } = await kv.list();
+    messages = await Promise.all(
+        keys.map(async (key: { name: string }) => {
+            const content = await kv.get(key.name);
+            return { id: key.name, content };
+        }),
+    );
+    messages.sort((a, b) => b.id.localeCompare(a.id));
+}
+---
+
+{
+    !kv ? (
+        <p>Box not found: {boxId}</p>
+    ) : messages.length === 0 ? (
+        <p>投稿はありません。</p>
+    ) : <div class="messages">{
+        messages.map((msg) => (
+            <div class="message">
+                <div class="id">{msg.id}</div>
+                <div class="message-content">{msg.content}</div>
+            </div>
+        ))
+    }</div>
+}
+
+<style is:inline>
+    .messages {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+
+        margin-top: 2em;
+    }
+    .message {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1em;
+        background: #f9f9f9;
+        text-align: left;
+        position: relative;
+    }
+    .message .id {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        padding: 0.2em 0.5em;
+
+        font-size: 0.8em;
+        color: #666;
+    }
+</style>

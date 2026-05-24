@@ -1,0 +1,21 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Banner from "../../components/Banner.astro";
+import BoxView from "../../components/BoxView.astro";
+import { boxExists, getBoxDisplayName } from "../../utils/box";
+
+export const prerender = false;
+
+const { boxId } = Astro.params;
+
+if (!boxId || !boxExists(boxId)) {
+    return Astro.rewrite("/404");
+}
+
+const boxName = getBoxDisplayName(boxId);
+---
+
+<Layout title={boxName}>
+    <Banner />
+    <BoxView boxId={boxId} boxName={boxName} />
+</Layout>

@@ -1,0 +1,62 @@
+---
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ja" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="/favicon.webp" />
+        <link rel="apple-touch-icon" href="/favicon.webp" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{title}</title>
+    </head>
+    <body>
+        <main>
+            <slot />
+        </main>
+        <footer>
+            <p>
+                <a href="https://kotone-fami.com">琴音ふぁみプロジェクト</a> | <a href="https://kotonone.org">Kotonone</a>
+            </p>
+        </footer>
+    </body>
+</html>
+
+<style is:global>
+    body,
+    p {
+        margin: 0px;
+    }
+    img {
+        user-select: none;
+        pointer-events: none;
+    }
+    main {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+
+        border: 1px solid #aaaaaa;
+        border-radius: 5px;
+        text-align: center;
+        padding: 2em;
+        max-width: 800px;
+        margin: 1em auto;
+    }
+    main h1 {
+        margin: 0px;
+        font-size: 1rem;
+        border-bottom: 1px solid #aaaaaa;
+    }
+    footer {
+        text-align: center;
+        font-size: 0.8em;
+        color: #666;
+        margin: 2em 0px;
+    }
+</style>

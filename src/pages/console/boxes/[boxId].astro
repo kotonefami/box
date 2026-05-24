@@ -1,0 +1,20 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ConsoleView from "../../../components/ConsoleView.astro";
+import { boxExists, getBoxDisplayName } from "../../../utils/box";
+
+export const prerender = false;
+
+const { boxId } = Astro.params;
+
+if (!boxId || !boxExists(boxId)) {
+    return Astro.rewrite("/404");
+}
+
+const boxName = getBoxDisplayName(boxId, `お題箱コンソール (${boxId})`);
+---
+
+<Layout title={boxName}>
+    <h1>{boxName}</h1>
+    <ConsoleView boxId={boxId} />
+</Layout>
