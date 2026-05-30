@@ -17,6 +17,8 @@ const { title } = Astro.props;
     </head>
     <body>
         <main>
+            <img src="/favicon.webp" width="400" height="400" alt="" />
+            <h1>{title}</h1>
             <slot />
         </main>
         <footer>
@@ -47,6 +49,13 @@ const { title } = Astro.props;
         padding: 2em;
         max-width: 800px;
         margin: 1em auto;
+    }
+    main img {
+        display: block;
+        width: 128px;
+        height: 128px;
+        border-radius: 1em;
+        margin-inline: auto;
     }
     main h1 {
         margin: 0px;

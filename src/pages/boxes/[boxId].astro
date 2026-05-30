@@ -1,8 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Banner from "../../components/Banner.astro";
-import BoxView from "../../components/BoxView.astro";
+import BoxForm from "../../components/BoxForm.astro";
 import { boxExists, getBoxDisplayName } from "../../utils/box";
+import DefaultDescription from "../../components/box/description/DefaultDescription.astro";
 
 export const prerender = false;
 
@@ -17,5 +18,6 @@ const boxName = getBoxDisplayName(boxId);
 
 <Layout title={boxName}>
     <Banner />
-    <BoxView boxId={boxId} boxName={boxName} />
+    <BoxForm boxId={boxId} />
+    {boxId === "default" ? <DefaultDescription /> : null}
 </Layout>
