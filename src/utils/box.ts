@@ -31,3 +31,9 @@ export function getBoxDisplayName(boxId: string, fallback?: string): string {
     const names = getBoxNames();
     return names[boxId] || fallback || `お題箱 (${boxId})`;
 }
+
+/** 箱のURLを取得します。 */
+export function getBoxUrl(boxId: string): string {
+    if (boxId === "default") return "/";
+    return `/boxes/${boxId}`;
+}

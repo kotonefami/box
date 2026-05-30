@@ -1,0 +1,11 @@
+---
+export const prerender = false;
+
+const { messageId } = Astro.params;
+
+if (!messageId) {
+    return Astro.rewrite("/404");
+}
+
+return Astro.rewrite(`/boxes/default/messages/${messageId}`);
+---

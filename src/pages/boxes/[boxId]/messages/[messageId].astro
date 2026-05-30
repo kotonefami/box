@@ -1,0 +1,54 @@
+---
+import Layout from "../../../../layouts/Layout.astro";
+import Banner from "../../../../components/Banner.astro";
+import { boxExists, getBoxDisplayName, getBoxKv, getBoxUrl } from "../../../../utils/box";
+
+export const prerender = false;
+
+const { boxId, messageId } = Astro.params;
+
+if (!boxId || !boxExists(boxId) || !messageId) {
+    return Astro.rewrite("/404");
+}
+
+const kv = getBoxKv(boxId);
+
+if (!kv) {
+    return Astro.rewrite("/404");
+}
+
+const content = await kv.get(messageId);
+
+if (content === null) {
+    return Astro.rewrite("/404");
+}
+
+const boxName = getBoxDisplayName(boxId);
+---
+
+<Layout title={boxName}>
+    <Banner />
+    <p class="message-content">{content}</p>
+    <a class="back" href={getBoxUrl(boxId)}>← 戻る</a>
+</Layout>
+
+<style>
+    .single-message {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+    .message-content {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1em;
+        background: #f9f9f9;
+        text-align: left;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+    .back {
+        text-align: center;
+        color: #666;
+    }
+</style>
