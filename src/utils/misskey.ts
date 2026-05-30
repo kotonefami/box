@@ -7,8 +7,7 @@ export async function postNoteToMisskey(text: string): Promise<void> {
 
     if (!misskeyServer || !misskeyToken) return;
 
-    const url = new URL("/api/notes/create", misskeyServer);
-    await fetch(url.toString(), {
+    await fetch("https://" + misskeyServer + "/api/notes/create", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

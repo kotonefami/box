@@ -1,7 +1,5 @@
 import type { APIRoute } from "astro";
-import { ulid } from "ulid";
-import { getBoxKv, getBoxUrl } from "../../../../utils/box";
-import { postNoteToMisskey } from "../../../../utils/misskey";
+import { post } from "../../../../utils/box";
 
 export const POST: APIRoute = async ({ request, params }) => {
     try {
@@ -13,7 +11,18 @@ export const POST: APIRoute = async ({ request, params }) => {
             });
         }
 
-        const formData = await request.formData();
+        let formData: FormData;
+        try {
+            formData = await request.formData();
+        } catch {
+            return new Response(
+                JSON.stringify({ error: "Invalid Content-Type" }),
+                {
+                    status: 400,
+                    headers: { "Content-Type": "application/json" },
+                },
+            );
+        }
         const content = formData.get("content")?.toString();
 
         if (!content) {
@@ -23,27 +32,17 @@ export const POST: APIRoute = async ({ request, params }) => {
             });
         }
 
-        const kv = getBoxKv(boxId);
+        try {
+            const { id } = await post(boxId, content);
 
-        if (!kv) {
-            return new Response(JSON.stringify({ error: "Box not found" }), {
-                status: 404,
+            return new Response(JSON.stringify({ id }), {
+                status: 201,
                 headers: { "Content-Type": "application/json" },
             });
+        } catch (e) {
+            if (e instanceof Response) return e;
+            throw e;
         }
-
-        const id = ulid();
-        await kv.put(id, content);
-
-        let boxBaseUrl = getBoxUrl(boxId).slice(1);
-        if (boxBaseUrl.at(-1) !== "/") boxBaseUrl += "/"; // NOTE: 必ず `path/to/box/` の形式にする
-        const boxUrl = "https://box.kotone-fami.net/" + boxBaseUrl + "messages/" + id;
-        await postNoteToMisskey(content + "\n\n" + boxUrl + "\n#琴音ふぁみのお題箱");
-
-        return new Response(JSON.stringify({ id }), {
-            status: 201,
-            headers: { "Content-Type": "application/json" },
-        });
     } catch (e) {
         console.error(e);
         return new Response(JSON.stringify({ error: "Internal Server Error" }), {

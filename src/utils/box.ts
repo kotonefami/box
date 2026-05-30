@@ -1,5 +1,7 @@
 import { env } from "cloudflare:workers";
 import type { KVNamespace } from "@cloudflare/workers-types";
+import { postNoteToMisskey } from "./misskey";
+import { ulid } from "ulid";
 
 /** 箱IDに対応するKVネームスペースを取得します。見つからない場合はnullを返します。 */
 export function getBoxKv(boxId: string): KVNamespace | null {
@@ -36,4 +38,23 @@ export function getBoxDisplayName(boxId: string, fallback?: string): string {
 export function getBoxUrl(boxId: string): string {
     if (boxId === "default") return "/";
     return `/boxes/${boxId}`;
+}
+
+/** お題を投稿します。 */
+export async function post(boxId: string, content: string): Promise<{ id: string }> {
+    const kv = getBoxKv(boxId);
+    if (!kv) {
+        throw new Response(JSON.stringify({ error: "Box not found" }), {
+            status: 404,
+            headers: { "Content-Type": "application/json" },
+        });
+    }
+
+    const id = ulid();
+    await kv.put(id, content);
+
+    const boxUrl = new URL(getBoxUrl(boxId).replace(/^\//, "") + "/messages/" + id, "https://box.kotone-fami.net").href;
+    await postNoteToMisskey(content + "\n\n" + boxUrl + "\n#琴音ふぁみのお題箱");
+
+    return { id };
 }

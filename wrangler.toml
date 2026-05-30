@@ -13,11 +13,12 @@ id = "b35154cee5b14af4a19be190d812d9b1"
 # id = "YOUR_KV_SECOND_ID"
 
 [vars]
-MISSKEY_SERVER = "https://ktnfm.com"
+MISSKEY_SERVER = "ktnfm.com"
 BOXES = "default"
 BOX_NAMES = '{"default":"第三世代琴音ふぁみのお題箱"}'
+RECIEVE_WEBHOOK_MISSKEY_USERNAME = "box"
 
-# MISSKEY_SERVER = "https://misskey.example.com"
+# MISSKEY_SERVER = "misskey.example.com"
 # MISSKEY_TOKEN = "YOUR_TOKEN"
 # CONSOLE_USER = "admin"
 # CONSOLE_PASS = "admin"

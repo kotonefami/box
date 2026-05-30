@@ -7,6 +7,8 @@ declare module "cloudflare:workers" {
         [k: `KV_${string}`]: KVNamespace;
         MISSKEY_SERVER: string;
         MISSKEY_TOKEN: string;
+        RECIEVE_WEBHOOK_TOKEN: string;
+        RECIEVE_WEBHOOK_MISSKEY_USERNAME: string;
         CONSOLE_USER?: string;
         CONSOLE_PASS?: string;
         BOXES?: string;
