@@ -16,7 +16,7 @@ export async function postNoteToMisskey(text: string): Promise<void> {
         body: JSON.stringify({
             i: misskeyToken,
             text,
-            visibility: "home",
+            visibility: "public",
         }),
     }).catch((e) => {
         console.error("Misskey API request failed", e);
