@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { post } from "../../../utils/box";
+import { post } from "@/utils/box";
 import { env } from "cloudflare:workers";
 
 export const POST: APIRoute = async ({ request, params }) => {
