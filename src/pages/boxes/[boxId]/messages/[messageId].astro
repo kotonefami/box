@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../../layouts/Layout.astro";
 import Banner from "../../../../components/Banner.astro";
+import MessageCard from "../../../../components/MessageCard.astro";
 import { boxExists, getBoxDisplayName, getBoxKv, getBoxUrl } from "../../../../utils/box";
 
 export const prerender = false;
@@ -28,7 +29,7 @@ const boxName = getBoxDisplayName(boxId);
 
 <Layout title={boxName}>
     <Banner />
-    <p class="message-content">{content}</p>
+    <MessageCard id={messageId} content={content} />
     <a class="back" href={getBoxUrl(boxId)}>← 戻る</a>
 </Layout>
 
@@ -37,15 +38,6 @@ const boxName = getBoxDisplayName(boxId);
         display: flex;
         flex-direction: column;
         gap: 1em;
-    }
-    .message-content {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 1em;
-        background: #f9f9f9;
-        text-align: left;
-        white-space: pre-wrap;
-        word-break: break-all;
     }
     .back {
         text-align: center;

@@ -1,5 +1,6 @@
 ---
 import { getBoxKv } from "../utils/box";
+import MessageCard from "./MessageCard.astro";
 
 interface Props {
     boxId: string;
@@ -29,12 +30,7 @@ if (kv) {
     ) : messages.length === 0 ? (
         <p>投稿はありません。</p>
     ) : <div class="messages">{
-        messages.map((msg) => (
-            <div class="message">
-                <div class="id">{msg.id}</div>
-                <div class="message-content">{msg.content}</div>
-            </div>
-        ))
+        messages.map((msg) => <MessageCard id={msg.id} content={msg.content} isAdmin={true} />)
     }</div>
 }
 
@@ -45,22 +41,5 @@ if (kv) {
         gap: 1em;
 
         margin-top: 2em;
-    }
-    .message {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 1em;
-        background: #f9f9f9;
-        text-align: left;
-        position: relative;
-    }
-    .message .id {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        padding: 0.2em 0.5em;
-
-        font-size: 0.8em;
-        color: #666;
     }
 </style>

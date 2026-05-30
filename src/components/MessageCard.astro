@@ -1,0 +1,42 @@
+---
+interface Props {
+    id: string;
+    content: string | null;
+    isAdmin?: boolean;
+}
+
+const { id, content, isAdmin } = Astro.props;
+---
+
+<div class="message">
+    { isAdmin && (
+        <nav>
+            <div class="id">{id}</div>
+        </nav>
+    )}
+    <div class="message-content">{content}</div>
+</div>
+
+<style is:inline>
+    .message {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1em;
+        background: #f9f9f9;
+        text-align: left;
+        position: relative;
+    }
+    .message nav {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .message .id {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        padding: 0.2em 0.5em;
+
+        font-size: 0.8em;
+        opacity: 0.5;
+    }
+</style>
